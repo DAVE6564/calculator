@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="shortcut icon" type="image/png" href="hh.jpg" style="height: 500px;width: 500px;">
+</head>
+<div class="container" content="width=device-width, initial-scale=1.0">
+    <div class="calculator">
+        <body>
+        <form>
+            <div type='no' class="display">
+                <input type="text" name="display" id="display" readonly>
+            </div>
+
+        <div>
+            <input type="button" value="C" onclick="clearDisplay()">
+            <input type="button" value="DE" onclick="dlt()//display.value =  display.value.toString().slice(0,-1)">
+            <input type="button" value="." onclick="appendOperator('.')">
+            <input type="button" value="÷" onclick="appendOperator('/')">
+        </div>
+
+        <div>
+            <input type="button" value="7" onclick="appendNumber('7')">
+            <input type="button" value="8" onclick="appendNumber('8')">
+            <input type="button" value="9" onclick="appendNumber('9')">
+            <input type="button" value="x" onclick="appendOperator('*')">
+        </div>
+
+        <div>
+            <input type="button" value="4" onclick="appendNumber('4')">
+            <input type="button" value="5" onclick="appendNumber('5')">
+            <input type="button" value="6" onclick="appendNumber('6')">
+            <input type="button" value="-" onclick="appendOperator('-')">
+        </div>
+
+        <div>
+            <input type="button" value="1" onclick="appendNumber('1')">
+            <input type="button" value="2" onclick="appendNumber('2')">
+            <input type="button" value="3" onclick="appendNumber('3')">
+            <input type="button" value="+" onclick="appendOperator('+')">
+        </div>
+
+        <div> 
+            <input type="button" value="⅟x"  onclick="calculateonva()">
+            <input type="button" value="0" onclick="appendNumber('0')">
+            <input type="button" value="x²" onclick="calculatePower()">
+            <input type="button" value="√x"  onclick="calculateSqrt()">
+
+        <div>
+            <input type="button" value="=" onclick="calculate()" class="equal">
+        </div>
+        </div>
+
+        </form>
+    </div>
+    </div>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: franklin gothic, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            background: #03f91f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calculator{
+            background: #232a31;
+            padding: 20px;
+            border-radius: 10;
+            border: #8c90af;
+            border: 10px;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .calculator form input{
+            border: 0;
+            outline: 0;
+            width: 10%;
+            height: 60px;
+            border-radius: 10px;
+            box-shadow: -8px -8px 15px rgba(175, 160, 160, 0.116), -5px -5px 15px rgba(0, 0, 0, 0.2);
+            background: transparent;
+            font-size: 25px;
+            color: #a5bfd8;
+            cursor: pointer;
+            margin: 7px;
+        }
+
+        form .display{
+            display: flex;
+            justify-content: flex-end;
+            margin: 20px 0;
+        }
+
+        form .display input{
+            text-align: right;
+            flex: 1;
+            font-size: 45px;
+            box-shadow: #ffffff;
+        }
+
+        form input.equal{
+            width: 100%;
+            font-size: 34px;
+        }
+
+        .com{
+            border: none;
+            background: transparent;
+            margin-left: 55%;
+            margin-bottom: -38%;
+        }
+
+        .list{
+            background-color: #e3f9ff;
+        }
+
+        /*mobile*/
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: franklin gothic, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container{
+            width: 100%;
+            height: 100vh;
+            background: #e3f9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calculator{
+            background: #232a31;
+            padding: 20px;
+            border-radius: 10;
+            border: #8c90af;
+            border: 10px;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .calculator form input{
+            border: 0;
+            outline: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            box-shadow: -8px -8px 15px rgba(175, 160, 160, 0.116), -5px -5px 15px rgba(0, 0, 0, 0.2);
+            background: transparent;
+            font-size: 25px;
+            color: #a5bfd8;
+            cursor: pointer;
+            margin: 7px;
+        }
+
+        form .display{
+            display: flex;
+            justify-content: flex-end;
+            margin: 20px 0;
+        }
+
+        form .display input{
+            text-align: right;
+            flex: 1;
+            font-size: 45px;
+            box-shadow: #ffffff;
+            caret-color: transparent;
+        }
+
+        form input.equal{
+            width: 100%;
+            font-size: 34px;
+        }
+
+        .com{
+            border: none;
+            background: transparent;
+            margin-left: 55%;
+            margin-bottom: -38%;
+        }
+
+    </style>
+    <script>
+        /*function x() {
+            x==='*';
+        }*/
+        let currentExpression = '';
+
+        function appendNumber(number) {
+            currentExpression += number;
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            currentExpression += (operator);
+            updateDisplay();
+        }
+
+        function calculateonva() {
+            try {
+                const result = eval(1/currentExpression);
+                currentExpression = result.toString();
+                updateDisplay();
+            } catch (error) {
+                currentExpression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function calculate() {
+            try {
+                const result = eval(currentExpression);
+                currentExpression = result.toString();
+                updateDisplay();
+            } catch (error) {
+                currentExpression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function calculateSqrt() {
+            try {
+                const result = Math.sqrt(eval(currentExpression));
+                currentExpression = result.toString();
+                updateDisplay();
+            } catch (error) {
+                currentExpression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function calculatePower() {
+            try {
+                const result = eval(currentExpression) ** 2;
+                const one = eval(currentExpression) ** 2;
+                currentExpression = result.toString();
+                currentExpression = one.toString();
+                updateDisplay();
+            } catch (error) {
+                currentExpression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function dlt() {
+            currentExpression = currentExpression.toString().slice(0,-1)
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentExpression = '';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('display').value = currentExpression;
+        }
+
+    </script>
+</body>
+</html>
